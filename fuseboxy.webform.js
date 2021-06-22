@@ -28,10 +28,10 @@ $(function(){
 			// number of KB (false for default)
 			// ===> javascript use KB for validation
 			// ===> server-side use byte for validation
-			maxSize: $btn.is('[data-file-size]') ? (parseInt($btn.attr('data-file-size'))/1024) : false,
+			maxSize: $btn.is('[data-filesize]') ? (parseInt($btn.attr('data-filesize'))/1024) : false,
 			// allowed file types (false for default)
 			// ===> server will perform validation again
-			allowedExtensions: $btn.is('[data-file-type]') ? $btn.attr('data-file-type').split(',') : false,
+			allowedExtensions: $btn.is('[data-filetype]') ? $btn.attr('data-filetype').split(',') : false,
 			// control what file to show when choosing files
 			hoverClass: 'btn-hover',
 			focusClass: 'active',
@@ -48,13 +48,13 @@ $(function(){
 			},
 			// validate allowed extension
 			onExtError: function(filename, extension) {
-				var msg = 'Invalid file type. Only file of '+$btn.attr('data-file-type').toUpperCase()+' is allowed.';
-				$err.show().html(msg.replace('{FILE_TYPE}', $btn.attr('data-file-type').toUpperCase()));
+				var msg = $btn.attr('data-filetype-error').replace('{FILE_TYPE}', $btn.attr('data-filetype').toUpperCase());
+				$err.show().html(msg);
 			},
 			// validate file size
 			onSizeError: function(filename, fileSize) {
-				var msg = 'File cannot exceed {FILE_SIZE}MB';
-				$err.show().html(msg.replace('{FILE_SIZE}', parseInt($btn.attr('data-file-size'))/(1024*1024)));
+				var msg = $btn.attr('data-filesize-error').replace('{FILE_SIZE}', $btn.attr('data-filesize'));
+				$err.show().html(msg);
 			},
 			// show link of uploaded file
 			onComplete: function(filename, response, uploadBtn, fileSize) {
@@ -65,14 +65,12 @@ $(function(){
 				if ( response.success ) {
 					$preview.html('<a href="'+response.fileUrl+'" target="_blank">'+response.filename+'</a>');
 					$container.find('input').val(response.fileUrl);
-					$btn.html('Choose Another File');
+					$btn.html( $btn.attr('data-button-alt-text') );
 				// when failure
 				// ===> show error message
-				} else {
-					$err.show().html( response.msg ? response.msg : response );
-				}
+				} else $err.show().html( response.msg ? response.msg : response );
 			},
-			// any error
+			// server error
 			onError: function(filename, errorType, status, statusText, response, uploadBtn, fileSize) {
 				alert('Error occurred while uploading file.\nPlease see console log for server response.');
 			}
