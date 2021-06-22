@@ -10,10 +10,13 @@ $(function(){
 		if ( !$err.length ) $err = $('<small class="form-text text-danger"></small>').hide().appendTo($container);
 		// create progress bar (when neccessary)
 		var $progress = $container.find('.progress');
-		if ( !$progress.length ) $progress = $('<div class="progress mt-4 mb-n4 mx-n4" style="border-radius: 0; height: 2px;"><div class="progress-bar"></div></div>').hide().appendTo($container);
+		if ( !$progress.length ) $progress = $('<div class="progress mt-4 mb-n4 mx-n4 rounded-0" style="height: 2px;"><div class="progress-bar"></div></div>').hide().appendTo($container);
 		// create preview link (when necessary)
-		var $preview = $container.find('.preview');
-		if ( !$preview.length ) $preview = $('<small class="preview ml-2"></small>').appendTo($container);
+		var $previewLink = $container.find('.preview-link');
+		if ( !$previewLink.length ) $previewLink = $('<a class="preview-link ml-2 small" target="_blank"></a>').hide().appendTo($container);
+		// create preview image (when necessary)
+		var $previewImage = $container.find('.preview-image');
+		if ( !$previewImage.length ) $previewImage = $('<div class="preview-image mt-2"><img class="img-thumbnail" alt="" /></div>').hide().appendTo($container);
 		// init ajax uploader
 		var uploader = new ss.SimpleUpload({
 			//----- essential config -----
@@ -28,23 +31,25 @@ $(function(){
 			// number of KB (false for default)
 			// ===> javascript use KB for validation
 			// ===> server-side use byte for validation
-			maxSize: $btn.is('[data-filesize]') ? (parseInt($btn.attr('data-filesize'))/1024) : false,
+			maxSize: parseInt($btn.attr('data-filesize'))/1024,
 			// allowed file types (false for default)
 			// ===> server will perform validation again
-			allowedExtensions: $btn.is('[data-filetype]') ? $btn.attr('data-filetype').split(',') : false,
+			allowedExtensions: $btn.attr('data-filetype').split(','),
 			// control what file to show when choosing files
 			hoverClass: 'btn-hover',
 			focusClass: 'active',
 			responseType: 'json',
 			// show progress bar
 			onSubmit: function(filename, extension, uploadBtn, fileSize) {
-				$err.html('').hide();
 				$progress.show();
-				this.setProgressBar( $progress.find('.progress-bar') );
 				this.setProgressContainer( $progress );
-				// additional parameters pass to upload-hanlder
+				this.setProgressBar( $progress.find('.progress-bar') );
+				// toggle other elements
+				$err.hide().html('');
+				$previewLink.hide().html('');
+				$previewImage.hide().find('img').attr('src', '');
+				// additional parameter pass to upload-hanlder
 				uploader._opts.data['originalName'] = encodeURI(filename);
-				uploader._opts.data['fieldName'] = $btn.attr('data-field');
 			},
 			// validate allowed extension
 			onExtError: function(filename, extension) {
@@ -53,19 +58,21 @@ $(function(){
 			},
 			// validate file size
 			onSizeError: function(filename, fileSize) {
-				var msg = $btn.attr('data-filesize-error').replace('{FILE_SIZE}', $btn.attr('data-filesize'));
+				var msg = $btn.attr('data-filesize-error').replace('{FILE_SIZE}', parseInt($btn.attr('data-filesize'))/(1024*1024)+'MB');
 				$err.show().html(msg);
 			},
 			// show link of uploaded file
 			onComplete: function(filename, response, uploadBtn, fileSize) {
 				// when success
-				// ===> display preview link
-				// ===> update hidden field
 				// ===> change button text
+				// ===> update hidden field
+				// ===> display preview link
+				// ===> display preview image (when necessary)
 				if ( response.success ) {
-					$preview.html('<a href="'+response.fileUrl+'" target="_blank">'+response.filename+'</a>');
-					$container.find('input').val(response.fileUrl);
 					$btn.html( $btn.attr('data-button-alt-text') );
+					$container.find('input').val(response.fileUrl);
+					$previewLink.show().attr('href', response.fileUrl).html(response.filename);
+					if ( response.isWebImage ) $previewImage.show().find('img').attr('src', response.fileUrl);
 				// when failure
 				// ===> show error message
 				} else $err.show().html( response.msg ? response.msg : response );
