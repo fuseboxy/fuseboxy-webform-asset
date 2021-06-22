@@ -5,18 +5,18 @@ $(function(){
 	$(document).on('mouseover focus', '.btn-webform-upload:not(.simple-ajax-uploader-ready)', function(evt){
 		var $btn = $(this);
 		var $container = $btn.closest('.form-control-file');
-		// create error box (when necessary)
-		var $err = $container.find('.form-text.text-danger');
-		if ( !$err.length ) $err = $('<small class="form-text text-danger"></small>').hide().appendTo($container);
-		// create progress bar (when neccessary)
-		var $progress = $container.find('.progress');
-		if ( !$progress.length ) $progress = $('<div class="progress mt-4 mb-n4 mx-n4 rounded-0" style="height: 2px;"><div class="progress-bar"></div></div>').hide().appendTo($container);
 		// create preview link (when necessary)
 		var $previewLink = $container.find('.preview-link');
 		if ( !$previewLink.length ) $previewLink = $('<a class="preview-link ml-2 small" target="_blank"></a>').hide().appendTo($container);
 		// create preview image (when necessary)
 		var $previewImage = $container.find('.preview-image');
 		if ( !$previewImage.length ) $previewImage = $('<div class="preview-image mt-2"><img class="img-thumbnail" alt="" /></div>').hide().appendTo($container);
+		// create error box (when necessary)
+		var $err = $container.find('.form-text.text-danger');
+		if ( !$err.length ) $err = $('<small class="form-text text-danger"></small>').hide().appendTo($container);
+		// create progress bar (when neccessary)
+		var $progress = $container.find('.progress');
+		if ( !$progress.length ) $progress = $('<div class="progress mt-4 mb-n4 mx-n4 rounded-0" style="height: 2px;"><div class="progress-bar"></div></div>').hide().appendTo($container);
 		// init ajax uploader
 		var uploader = new ss.SimpleUpload({
 			//----- essential config -----
