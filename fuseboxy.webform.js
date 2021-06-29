@@ -2,7 +2,7 @@ $(function(){
 
 
 	// init signature pad
-	$(document).on('mouseover mousedown', '.webform-input-siganture .signature-pad:not(.pad-ready)', function(evt){
+	$(document).on('mouseover mousedown', '.webform-input-siganture .signature-pad:not(.ready)', function(evt){
 		var $pad = $(this);
 		var $container = $pad.closest('.webform-input-siganture');
 		$pad.jSignature({
@@ -10,12 +10,12 @@ $(function(){
 			'width' : $parent.width() - 6,
 		});
 		// mark flag
-		$btn.addClass('pad-ready');
+		$btn.addClass('ready');
 	});
 
 
 	// init ajax uploader
-	$(document).on('mouseover focus', '.webform-input-file .btn-upload:not(.simple-ajax-uploader-ready)', function(evt){
+	$(document).on('mouseover focus', '.webform-input-file .btn-upload:not(.ready)', function(evt){
 		var $btn = $(this);
 		var $container = $btn.closest('.webform-input-file');
 		// create preview link (when necessary)
@@ -92,7 +92,7 @@ $(function(){
 			}
 		}); // new-SimpleUpload
 		// mark flag
-		$btn.addClass('simple-ajax-uploader-ready');
+		$btn.addClass('ready');
 	});
 
 
