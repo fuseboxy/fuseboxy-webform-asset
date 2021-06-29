@@ -1,22 +1,23 @@
 $(function(){
 
 
-	// init signature-pad
-	$('.webform-input-signature .signature-pad').each(function(){
-		$parent = $(this).parent();
-		$(this).jSignature({
+	// init signature pad
+	$(document).on('mouseover mousedown', '.webform-input-siganture .signature-pad:not(.pad-ready)', function(evt){
+		var $pad = $(this);
+		var $container = $pad.closest('.webform-input-siganture');
+		$pad.jSignature({
 			'height' : $parent.height() - 6,
 			'width' : $parent.width() - 6,
 		});
+		// mark flag
+		$btn.addClass('pad-ready');
 	});
-
-
 
 
 	// init ajax uploader
 	$(document).on('mouseover focus', '.webform-input-file .btn-upload:not(.simple-ajax-uploader-ready)', function(evt){
 		var $btn = $(this);
-		var $container = $btn.closest('.form-control-file');
+		var $container = $btn.closest('.webform-input-file');
 		// create preview link (when necessary)
 		var $previewLink = $container.find('.preview-link');
 		if ( !$previewLink.length ) $previewLink = $('<a class="preview-link ml-2 small" target="_blank"></a>').hide().appendTo($container);
@@ -90,9 +91,9 @@ $(function(){
 				alert('Error occurred while uploading file.\nPlease see console log for server response.');
 			}
 		}); // new-SimpleUpload
-		// mark completed
+		// mark flag
 		$btn.addClass('simple-ajax-uploader-ready');
-	}); // onMouseover-btnWebformUpload
+	});
 
 
 });
