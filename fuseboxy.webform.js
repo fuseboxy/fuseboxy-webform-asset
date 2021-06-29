@@ -1,6 +1,18 @@
 $(function(){
 
 
+	// init signature-pad
+	$('.webform-input-signature .signature-pad').each(function(){
+		$parent = $(this).parent();
+		$(this).jSignature({
+			'height' : $parent.height() - 6,
+			'width' : $parent.width() - 6,
+		});
+	});
+
+
+
+
 	// init ajax uploader
 	$(document).on('mouseover focus', '.webform-input-file .btn-upload:not(.simple-ajax-uploader-ready)', function(evt){
 		var $btn = $(this);
