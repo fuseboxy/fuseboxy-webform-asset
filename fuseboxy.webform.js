@@ -1,10 +1,8 @@
 $(function(){
 
 
-
-
 	// init ajax uploader
-	$(document).on('mouseover focus', '.btn-webform-upload:not(.simple-ajax-uploader-ready)', function(evt){
+	$(document).on('mouseover focus', '.webform-input-file .btn-upload:not(.simple-ajax-uploader-ready)', function(evt){
 		var $btn = $(this);
 		var $container = $btn.closest('.form-control-file');
 		// create preview link (when necessary)
