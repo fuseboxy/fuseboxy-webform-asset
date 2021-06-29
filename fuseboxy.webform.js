@@ -1,6 +1,8 @@
 $(function(){
 
 
+
+
 	// init ajax uploader
 	$(document).on('mouseover focus', '.btn-webform-upload:not(.simple-ajax-uploader-ready)', function(evt){
 		var $btn = $(this);
@@ -8,9 +10,6 @@ $(function(){
 		// create preview link (when necessary)
 		var $previewLink = $container.find('.preview-link');
 		if ( !$previewLink.length ) $previewLink = $('<a class="preview-link ml-2 small" target="_blank"></a>').hide().appendTo($container);
-		// create preview image (when necessary)
-		var $previewImage = $container.find('.preview-image');
-		if ( !$previewImage.length ) $previewImage = $('<div class="preview-image mt-2"><img class="img-thumbnail" alt="" /></div>').hide().appendTo($container);
 		// create error box (when necessary)
 		var $err = $container.find('.form-text.text-danger');
 		if ( !$err.length ) $err = $('<small class="form-text text-danger"></small>').hide().appendTo($container);
@@ -47,7 +46,6 @@ $(function(){
 				// toggle other elements
 				$err.hide().html('');
 				$previewLink.hide().html('');
-				$previewImage.hide().find('img').attr('src', '');
 				// additional parameter pass to upload-hanlder
 				uploader._opts.data['originalName'] = encodeURI(filename);
 			},
@@ -71,8 +69,8 @@ $(function(){
 				if ( response.success ) {
 					$btn.html( $btn.attr('data-button-alt-text') );
 					$container.find('input').val(response.fileUrl);
-					$previewLink.show().attr('href', response.fileUrl).html(response.filename);
-					if ( response.isWebImage ) $previewImage.show().find('img').attr('src', response.fileUrl);
+					$previewLink.show().attr('href', response.fileUrl);
+					$previewLink.html( response.isWebImage ? '<img src="'+response.fileUrl+'" class="img-thumbnail mt-2" alt="" />' : response.filename );
 				// when failure
 				// ===> show error message
 				} else $err.show().html( response.msg ? response.msg : response );
