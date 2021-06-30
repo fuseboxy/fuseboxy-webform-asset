@@ -1,2 +1,3 @@
-.webform-input-signature { height: 200px; }
-.webform-input-signature .signature-pad { cursor: pointer; }
+.webform-input-signature { border: 1px solid transparent; height: 200px; }
+.webform-input-signature.ready { cursor: pointer; }
+.webform-input-signature.ready:hover { border: 1px solid #dee2e6; }
