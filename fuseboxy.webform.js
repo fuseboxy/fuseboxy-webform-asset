@@ -2,15 +2,15 @@ $(function(){
 
 
 	// init signature pad
-	$(document).on('mouseover mousedown', '.webform-input-siganture .signature-pad:not(.ready)', function(evt){
-		var $pad = $(this);
-		var $container = $pad.closest('.webform-input-siganture');
+	$(document).on('mouseover mousedown', '.webform-input-signature:has(.signature-pad):not(.ready)', function(evt){
+		var $container = $(this);
+		var $pad = $container.find('.signature-pad');
 		$pad.jSignature({
-			'height' : $parent.height() - 6,
-			'width' : $parent.width() - 6,
+			'height' : $container.height() - 6,
+			'width' : $container.width() - 6,
 		});
 		// mark flag
-		$btn.addClass('ready');
+		$container.addClass('ready');
 	});
 
 
