@@ -12,27 +12,25 @@ $(function(){
 		// mark flag
 		$container.addClass('ready');
 	});
-
-
-	// reset upload field
-	$(document).on('click', '.webform-input-file .btn-remove', function(evt){
-		var $btnRemove = $(this);
-		var $container = $btnRemove.closest('.webform-input-file');
-		var $btnUpload = $container.find('.btn-upload');
-		var $hiddenField = $container.find('input');
-		var $previewLink = $container.find('.preview-link');
-		$btnRemove.hide();
-		$btnUpload.html( $btnUpload.attr('data-button-alt-text') );
+	// reset signature pad
+	$(document).on('click', '.webform-input-signature.ready .btn-clear', function(evt){
+		var $btnClear = $(this);
+		var $container = $btnClear.closest('.webform-input-signature');
+		var $hiddenField = $container.find('input[name^=data]');
+		var $pad = $container.find('.signature-pad');
+		$btnClear.hide();
 		$hiddenField.val('');
-		$previewLink.attr('href', '').html('').hide();
+alert('clear!');
 	});
+
+
 	// init ajax uploader
 	$(document).on('mouseover focus', '.webform-input-file:has(.btn-upload):not(.ready)', function(evt){
 		var $container = $(this);
 		var $containerInner = $container.find('label.form-control-file');
 		var $btnUpload = $container.find('.btn-upload');
 		var $btnRemove = $container.find('.btn-remove');
-		var $hiddenField = $container.find('input');
+		var $hiddenField = $container.find('input[name^=data]');
 		// create preview link (when necessary)
 		var $previewLink = $container.find('.preview-link');
 		if ( !$previewLink.length ) $previewLink = $('<a class="preview-link small" target="_blank"></a>').hide().appendTo($containerInner);
@@ -109,6 +107,18 @@ $(function(){
 		}); // new-SimpleUpload
 		// mark flag
 		$container.addClass('ready');
+	});
+	// reset upload field
+	$(document).on('click', '.webform-input-file.ready .btn-remove', function(evt){
+		var $btnRemove = $(this);
+		var $container = $btnRemove.closest('.webform-input-file');
+		var $btnUpload = $container.find('.btn-upload');
+		var $hiddenField = $container.find('input');
+		var $previewLink = $container.find('.preview-link');
+		$btnRemove.hide();
+		$btnUpload.html( $btnUpload.attr('data-button-alt-text') );
+		$hiddenField.val('');
+		$previewLink.attr('href', '').html('').hide();
 	});
 
 
