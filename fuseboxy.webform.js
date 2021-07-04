@@ -14,11 +14,25 @@ $(function(){
 	});
 
 
+	// reset upload field
+	$(document).on('click', '.webform-input-file .btn-remove', function(evt){
+		var $btnRemove = $(this);
+		var $container = $btnRemove.closest('.webform-input-file');
+		var $btnUpload = $container.find('.btn-upload');
+		var $hiddenField = $container.find('input');
+		var $previewLink = $container.find('.preview-link');
+		$btnRemove.hide();
+		$btnUpload.html( $btnUpload.attr('data-button-alt-text') );
+		$hiddenField.val('');
+		$previewLink.attr('href', '').html('').hide();
+	});
 	// init ajax uploader
 	$(document).on('mouseover focus', '.webform-input-file:has(.btn-upload):not(.ready)', function(evt){
 		var $container = $(this);
 		var $containerInner = $container.find('label.form-control-file');
-		var $btn = $container.find('.btn-upload');
+		var $btnUpload = $container.find('.btn-upload');
+		var $btnRemove = $container.find('.btn-remove');
+		var $hiddenField = $container.find('input');
 		// create preview link (when necessary)
 		var $previewLink = $container.find('.preview-link');
 		if ( !$previewLink.length ) $previewLink = $('<a class="preview-link small" target="_blank"></a>').hide().appendTo($containerInner);
@@ -31,21 +45,21 @@ $(function(){
 		// init ajax uploader
 		var uploader = new ss.SimpleUpload({
 			//----- essential config -----
-			button: $btn,
-			name: $btn.attr('id'),
-			url: $btn.attr('data-upload-handler'),
+			button: $btnUpload,
+			name: $btnUpload.attr('id'),
+			url: $btnUpload.attr('data-upload-handler'),
 			//----- optional config -----
-			progressUrl: $btn.attr('data-upload-progress'),
+			progressUrl: $btnUpload.attr('data-upload-progress'),
 			multiple: false,
 			maxUploads: 1,
 			debug: true,
 			// number of KB (false for default)
 			// ===> javascript use KB for validation
 			// ===> server-side use byte for validation
-			maxSize: parseInt($btn.attr('data-filesize'))/1024,
+			maxSize: parseInt($btnUpload.attr('data-filesize'))/1024,
 			// allowed file types (false for default)
 			// ===> server will perform validation again
-			allowedExtensions: $btn.attr('data-filetype').split(','),
+			allowedExtensions: $btnUpload.attr('data-filetype').split(','),
 			// control what file to show when choosing files
 			hoverClass: 'btn-hover',
 			focusClass: 'active',
@@ -63,12 +77,12 @@ $(function(){
 			},
 			// validate allowed extension
 			onExtError: function(filename, extension) {
-				var msg = $btn.attr('data-filetype-error').replace('{FILE_TYPE}', $btn.attr('data-filetype').toUpperCase());
+				var msg = $btnUpload.attr('data-filetype-error').replace('{FILE_TYPE}', $btnUpload.attr('data-filetype').toUpperCase());
 				$err.show().html(msg);
 			},
 			// validate file size
 			onSizeError: function(filename, fileSize) {
-				var msg = $btn.attr('data-filesize-error').replace('{FILE_SIZE}', parseInt($btn.attr('data-filesize'))/(1024*1024)+'MB');
+				var msg = $btnUpload.attr('data-filesize-error').replace('{FILE_SIZE}', parseInt($btnUpload.attr('data-filesize'))/(1024*1024)+'MB');
 				$err.show().html(msg);
 			},
 			// show link of uploaded file
@@ -79,8 +93,9 @@ $(function(){
 				// ===> display preview link
 				// ===> display preview image (when necessary)
 				if ( response.success ) {
-					$btn.html( $btn.attr('data-button-alt-text') );
-					$container.find('input').val(response.fileUrl);
+					$btnUpload.html( $btnUpload.attr('data-button-alt-text') );
+					$btnRemove.show();
+					$hiddenField.val(response.fileUrl);
 					$previewLink.show().attr('href', response.fileUrl);
 					$previewLink.html( response.isWebImage ? '<img src="'+response.fileUrl+'" class="img-thumbnail mt-2" alt="" />' : response.filename );
 				// when failure
