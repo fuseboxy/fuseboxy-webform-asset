@@ -27,8 +27,10 @@ $(function(){
 		var $btnClear = $(this);
 		var $container = $btnClear.closest('.webform-input-signature');
 		var $hiddenField = $container.find('input[name^=data]');
-		var $pad = $container.find('.signature-pad');
-		$pad.jSignature('reset');
+		var $signaturePad = $container.find('.signature-pad');
+		var $signatureImage = $container.find('img');
+		$signatureImage.remove();
+		$signaturePad.show().jSignature('reset');
 		$hiddenField.val('');
 		$btnClear.hide();
 	});
