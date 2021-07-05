@@ -1,30 +1,39 @@
 $(function(){
 
 
-	// init signature pad
+	// signature pad : init
 	$(document).on('mouseover mousedown', '.webform-input-signature:has(.signature-pad):not(.ready)', function(evt){
 		var $container = $(this);
+		var $btnClear = $container.find('.btn-clear');
+		var $hiddenField = $container.find('input[name^=data]');
 		var $pad = $container.find('.signature-pad');
+		// tranform
 		$pad.jSignature({
 			'height' : $container.height() - 6,
 			'width' : $container.width() - 6,
+		// sync to field
+		}).bind('change', function(evt){
+			$hiddenField.val( $pad.jSignature('getData', 'svg') );
+			if ( $hiddenField.val().length ) $btnClear.show();
 		});
 		// mark flag
 		$container.addClass('ready');
 	});
-	// reset signature pad
+
+
+	// signature pad : clear button
 	$(document).on('click', '.webform-input-signature.ready .btn-clear', function(evt){
 		var $btnClear = $(this);
 		var $container = $btnClear.closest('.webform-input-signature');
 		var $hiddenField = $container.find('input[name^=data]');
 		var $pad = $container.find('.signature-pad');
-		$btnClear.hide();
+		$pad.jSignature('reset');
 		$hiddenField.val('');
-alert('clear!');
+		$btnClear.hide();
 	});
 
 
-	// init ajax uploader
+	// ajax uploader : init
 	$(document).on('mouseover focus', '.webform-input-file:has(.btn-upload):not(.ready)', function(evt){
 		var $container = $(this);
 		var $containerInner = $container.find('label.form-control-file');
@@ -108,7 +117,9 @@ alert('clear!');
 		// mark flag
 		$container.addClass('ready');
 	});
-	// reset upload field
+
+
+	// ajax upload : remove button
 	$(document).on('click', '.webform-input-file.ready .btn-remove', function(evt){
 		var $btnRemove = $(this);
 		var $container = $btnRemove.closest('.webform-input-file');
