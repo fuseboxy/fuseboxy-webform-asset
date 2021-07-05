@@ -13,8 +13,9 @@ $(function(){
 			'width' : $container.width() - 6,
 		// sync to field
 		}).bind('change', function(evt){
-			$hiddenField.val( $pad.jSignature('getData', 'svg') );
-			if ( $hiddenField.val().length ) $btnClear.show();
+			var $data = $pad.jSignature('getData', 'svg');
+			$hiddenField.val($data[1]);
+			$btnClear.show();
 		});
 		// mark flag
 		$container.addClass('ready');
