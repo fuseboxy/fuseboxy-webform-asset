@@ -28,7 +28,7 @@ $(function(){
 		var $container = $btnClear.closest('.webform-input-signature');
 		var $hiddenField = $container.find('input[name^=data]');
 		var $signaturePad = $container.find('.signature-pad');
-		var $signatureImage = $container.find('img');
+		var $signatureImage = $container.find('.signature-image');
 		$signatureImage.remove();
 		$signaturePad.show().jSignature('reset');
 		$hiddenField.val('');
