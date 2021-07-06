@@ -1,3 +1,13 @@
-.webform-input-signature { border: solid 1px transparent; height: 200px; }
+.webform-input-signature {
+	border: solid 1px transparent;
+	height: 200px;
+	position: relative;
+}
+.webform-input-signature .signature-image {
+	left: 50%;
+	position: absolute;
+	top: 50%;
+	transform: translate(-50%, -50%);
+}
 .webform-input-signature.ready:hover { border: solid 1px #dee2e6; }
 .webform-input-signature.ready .signature-pad { cursor: pointer; }
