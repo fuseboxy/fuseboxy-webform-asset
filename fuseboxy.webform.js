@@ -123,7 +123,7 @@ $(function(){
 
 
 	// ajax upload : remove button
-	$(document).on('click', '.webform-input-file.ready .btn-remove,.webform-inut-image.ready .btn-remove', function(evt){
+	$(document).on('click', '.webform-input-file.ready .btn-remove,.webform-input-image.ready .btn-remove', function(evt){
 		var $btnRemove = $(this);
 		var $container = $btnRemove.closest('.webform-input-file,.webform-input-image');
 		var $btnUpload = $container.find('.btn-upload');
