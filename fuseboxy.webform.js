@@ -115,7 +115,7 @@ $(function(){
 					$btnRemove.show();
 					$hiddenField.val(response.fileUrl);
 					$previewLink.show().attr('href', response.fileUrl);
-					$previewLink.html( response.isWebImage ? '<img src="'+response.fileUrl+'" class="img-thumbnail mt-2" alt="" />' : response.filename );
+					$previewLink.html( response.isWebImage ? '<img src="'+response.fileUrl+'" class="img-thumbnail d-block mt-2" alt="" />' : response.filename );
 				// when failure
 				// ===> show error message
 				} else $err.show().html( response.msg ? response.msg : response );
