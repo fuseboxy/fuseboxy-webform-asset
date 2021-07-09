@@ -1,6 +1,14 @@
 $(function(){
 
 
+	// datepicker : init
+	$(document).on('focus', '.datepicker:not(.ready)', function(evt){
+		var $field = $(this);
+		$field.datetimepicker({ format: 'Y-m-d', timepicker: false });
+		$field.addClass('ready').focus();
+	});
+
+
 	// signature pad : init
 	$(document).on('mouseover mousedown', '.webform-input-signature:has(.signature-pad):not(.ready)', function(evt){
 		var $container = $(this);
