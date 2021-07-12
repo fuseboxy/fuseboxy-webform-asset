@@ -147,7 +147,7 @@ $(function(){
 		var $hiddenField = $container.find('input');
 		var $previewLink = $container.find('.preview-link');
 		$btnRemove.hide();
-		$btnUpload.html( $btnUpload.attr('data-button-alt-text') );
+		$btnUpload.html( $btnUpload.attr('data-button-text') );
 		$hiddenField.val('');
 		$previewLink.attr('href', '').html('').hide();
 	});
