@@ -1,6 +1,15 @@
 $(function(){
 
 
+	// number field : allow numeric & period only
+	$(document).on('keyup', '.webform-input-number input', function(evt){
+		var regex = new RegExp('[^0-9, ]', "g");
+		var $field = $(this);
+		var filtered = $field.val().replace(regex, '');
+		if (  $field.val() != filtered )  $field.val(filtered);
+	});
+
+
 	// datepicker : init
 	$(document).on('focus', '.datepicker:not(.ready)', function(evt){
 		var $field = $(this);
