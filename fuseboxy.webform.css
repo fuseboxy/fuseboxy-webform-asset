@@ -1,3 +1,4 @@
+/* signature pad */
 .webform-input-signature {
 	border: solid 1px transparent;
 	height: 200px;
@@ -11,3 +12,25 @@
 }
 .webform-input-signature.ready:hover { border: solid 1px #dee2e6; }
 .webform-input-signature.ready .signature-pad { cursor: pointer; }
+
+
+/* autosave */
+.webform-autosave {
+	bottom: 0;
+	opacity: .6;
+	position: fixed;
+	right: 0;
+	transition: opacity .5s;
+	width: 10rem;
+}
+.webform-autosave:hover { opacity: 1; }
+.webform-autosave .timer canvas {
+	position: relative;
+	top: 2px;
+}
+@media screen and (min-width: 1530px) {
+	.webform-autosave {
+		opacity: 1;
+		right: calc(50vw - 765px);
+	}
+}

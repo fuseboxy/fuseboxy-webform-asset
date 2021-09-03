@@ -153,4 +153,23 @@ $(function(){
 	});
 
 
+	// autosave : timer
+	$('.webform-autosave').each(function(){
+		window.setInterval(function(){
+			// only get the last one (there could be two same element on the screen during ajax-submit)
+			var $timer = $('.webform-autosave:last .timer input');
+			// transform timer (when necessary)
+			$timer.filter(':not(.knob-ready)').addClass('knob-ready').knob();
+			// countdown...
+			var max = parseInt($timer.attr('data-max'));
+			var val = parseInt($timer.val());
+			if ( val < max ) {
+				$timer.val(val+1).trigger('change');
+			} else {
+				$timer.closest('form').submit();
+			}
+		}, 1000);
+	});
+
+
 });
