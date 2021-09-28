@@ -14,6 +14,10 @@
 .webform-input-signature.ready .signature-pad { cursor: pointer; }
 
 
+/* table field */
+.webform-input-table .webform-input.form-group { margin-bottom: .5rem; }
+
+
 /* autosave */
 .webform-autosave {
 	bottom: 0;
