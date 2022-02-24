@@ -31,7 +31,7 @@ $(function(){
 		// sync to field
 		}).bind('change', function(evt){
 			var $data = $pad.jSignature('getData', 'svg');
-			$hiddenField.val($data[1]);
+			$hiddenField.val($data[1]).trigger('change');
 			$btnClear.show();
 		});
 		// mark flag
@@ -48,7 +48,7 @@ $(function(){
 		var $signatureImage = $container.find('.signature-image');
 		$signatureImage.remove();
 		$signaturePad.show().jSignature('reset');
-		$hiddenField.val('');
+		$hiddenField.val('').trigger('change');
 		$btnClear.hide();
 	});
 
@@ -148,7 +148,7 @@ $(function(){
 		var $previewLink = $container.find('.preview-link');
 		$btnRemove.hide();
 		$btnUpload.html( $btnUpload.attr('data-button-text') );
-		$hiddenField.val('');
+		$hiddenField.val('').trigger('change');
 		$previewLink.attr('href', '').html('').hide();
 	});
 
