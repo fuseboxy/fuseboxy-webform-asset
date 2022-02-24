@@ -116,13 +116,13 @@ $(function(){
 			onComplete: function(filename, response, uploadBtn, fileSize) {
 				// when success
 				// ===> change button text
-				// ===> update hidden field
+				// ===> update hidden field (and trigger [onchange] event)
 				// ===> display preview link
 				// ===> display preview image (when necessary)
 				if ( response.success ) {
 					$btnUpload.html( $btnUpload.attr('data-button-alt-text') );
 					$btnRemove.show();
-					$hiddenField.val(response.fileUrl);
+					$hiddenField.val(response.fileUrl).trigger('change');
 					$previewLink.show().attr('href', response.fileUrl);
 					$previewLink.html( response.isWebImage ? '<img src="'+response.fileUrl+'" class="img-thumbnail d-block mt-2" alt="" />' : response.filename );
 				// when failure
