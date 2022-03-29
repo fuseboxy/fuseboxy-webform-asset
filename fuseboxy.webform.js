@@ -40,6 +40,27 @@ $(function(){
 	});
 
 
+	// dataAllowed : realtime filter
+	$(document).on('keyup', '.webform-input [data-allowed]', function(evt){
+		var $field = $(this);
+		var allowed = $field.attr('data-allowed');
+		var original = $field.val();
+		var filtered = '';
+		for ( i=0; i<original.length; i++ ) if ( allowed.indexOf(original[i]) !== -1 ) filtered += original[i];
+		if ( $field.val() != filtered ) $field.val(filtered);
+	});
+
+
+	// dataDisallowed : realtime filter
+	$(document).on('keyup', '.webform-input [data-disallowed]', function(evt){
+		var $field = $(this);
+		var disallowed = $field.attr('data-disallowed');
+		var filtered = $field.val();
+		for ( i=0; i<disallowed.length; i++ ) filtered = filtered.replace(disallowed[i], '');
+		if ( $field.val() != filtered ) $field.val(filtered);
+	});
+
+
 	// datepicker : init
 	$(document).on('focus', '.datepicker:not(.ready)', function(evt){
 		var $field = $(this);
