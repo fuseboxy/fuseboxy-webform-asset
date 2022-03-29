@@ -1,12 +1,21 @@
 $(function(){
 
 
-	// number field : allow numeric & period only
+	// number : only allow numeric & period
 	$(document).on('keyup', '.webform-input-number input', function(evt){
 		var regex = new RegExp('[^0-9.]', "g");
 		var $field = $(this);
 		var filtered = $field.val().replace(regex, '');
-		if (  $field.val() != filtered )  $field.val(filtered);
+		if (  $field.val() != filtered ) $field.val(filtered);
+	});
+
+
+	// email : only allow alphanumeric & certain symbols
+	$(document).on('keyup', '.webform-input-email input', function(evt){
+		var regex = new RegExp('[^a-zA-Z0-9@._\-]', "g");
+		var $field = $(this);
+		var filtered = $field.val().replace(regex, '').toLowerCase();
+		if (  $field.val() != filtered ) $field.val(filtered);
 	});
 
 
