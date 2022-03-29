@@ -1,21 +1,42 @@
 $(function(){
 
 
-	// number : only allow numeric & period
+	// number : realtime filter (only allow numeric & period)
 	$(document).on('keyup', '.webform-input-number input', function(evt){
-		var regex = new RegExp('[^0-9.]', "g");
+		var regex = new RegExp('[^0-9.]', 'g');
 		var $field = $(this);
 		var filtered = $field.val().replace(regex, '');
-		if (  $field.val() != filtered ) $field.val(filtered);
+		if ( $field.val() != filtered ) $field.val(filtered);
 	});
 
 
-	// email : only allow alphanumeric & certain symbols
+	// email : realtime filter (only allow alpha-numeric & certain symbols)
 	$(document).on('keyup', '.webform-input-email input', function(evt){
-		var regex = new RegExp('[^a-zA-Z0-9@._\-]', "g");
+		var regex = new RegExp('[^a-zA-Z0-9@._\-]', 'g');
 		var $field = $(this);
 		var filtered = $field.val().replace(regex, '').toLowerCase();
-		if (  $field.val() != filtered ) $field.val(filtered);
+		if ( $field.val() != filtered ) $field.val(filtered);
+	});
+
+
+	// date : realtime filter (only allow numeric & dash)
+	$(document).on('keyup', '.webform-input-date input', function(evt){
+		var regex = new RegExp('[^0-9\-]', 'g');
+		var $field = $(this);
+		var filtered;
+		// unify delimiter
+		filtered = $field.val().replace('/', '-');
+		if ( $field.val() != filtered ) $field.val(filtered);
+		// auto-append delimiter
+		var arr = $field.val().split('-');
+		if ( arr.length == 1 && arr[0].length == 4 ) $field.val( $field.val()+'-' );
+		if ( arr.length == 2 && arr[1].length == 2 ) $field.val( $field.val()+'-' );
+		// remove duplicated delimiter
+		filtered = $field.val().replace(/[\-]+/g, '-');
+		if ( $field.val() != filtered ) $field.val(filtered);
+		// remove illegal character
+		filtered = $field.val().replace(regex, '').substring(0, 10);
+		if ( $field.val() != filtered ) $field.val(filtered);
 	});
 
 
