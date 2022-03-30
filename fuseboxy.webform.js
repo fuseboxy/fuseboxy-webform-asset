@@ -66,32 +66,29 @@ $(function(){
 		var $thisField = $(this);
 		var toggleConfig = JSON.parse($thisField.attr('data-toggle-attr'));
 		var $targetField = $thisField.closest('form').find(toggleConfig.targetSelector);
-		// when...
-		if ( toggleConfig.setAttr && toggleConfig.setAttr.when ) {
-			for ( var whenValue in toggleConfig.setAttr.when ) {
-				if ( $thisField.val() == whenValue ) {
-					for ( var attrName in toggleConfig.setAttr.when[whenValue] ) {
-						var attrValue = toggleConfig.setAttr.when[whenValue][attrName];
-						if ( attrValue === false || attrValue === null ) $targetField.removeAttr(attrName);
-						else if ( attrValue === true ) $targetField.attr(attrName, attrName);
-						else $targetField.attr(attrName, attrValue);
-					}
-				}
-			}
-		}
-		// when not...
-		if ( toggleConfig.setAttr && toggleConfig.setAttr.whenNot ) {
-			for ( var whenNotValue in toggleConfig.setAttr.whenNot ) {
-				if ( $thisField.val() != whenNotValue ) {
-					for ( var attrName in toggleConfig.setAttr.whenNot[whenNotValue] ) {
-						var attrValue = toggleConfig.setAttr.whenNot[whenNotValue][attrName];
-						if ( attrValue === false || attrValue === null ) $targetField.removeAttr(attrName);
-						else if ( attrValue === true ) $targetField.attr(attrName, attrName);
-						else $targetField.attr(attrName, attrValue);
-					}
-				}
-			}
-		}
+		// go through each action type
+		for ( var actionType of ['setAttr'] ) {
+			// go through each rule type
+			for ( var ruleType of ['when', 'whenNot'] ) {
+				// check if config exists
+				if ( toggleConfig[actionType] && toggleConfig[actionType][ruleType] ) {
+					// go through each specified value in rules
+					for ( var ruleValue in toggleConfig[actionType][ruleType] ) {
+						var isRuleMatched = ( ruleType == 'when' && $thisField.val() == ruleValue ) || ( ruleType == 'whenNot' && $thisField.val() != ruleValue );
+						// check if rule matched
+						if ( isRuleMatched ) {
+							// modify each specified attribute
+							for ( var attrName in toggleConfig[actionType][ruleType][ruleValue] ) {
+								var attrValue = toggleConfig[actionType][ruleType][ruleValue][attrName];
+								if ( attrValue === false || attrValue === null ) $targetField.removeAttr(attrName);
+								else if ( attrValue === true ) $targetField.attr(attrName, attrName);
+								else $targetField.attr(attrName, attrValue);
+							}
+						} // for-attrName
+					} // for-ruleValue
+				} // if-defined
+			} // for-ruleType
+		} // for-actionType
 	});
 
 
@@ -122,6 +119,10 @@ $(function(){
 	// toggleClass : behavior
 	$(document).on('change', '.webform-input [data-toggle-class]', function(evt){
 		var $thisField = $(this);
+		var toggleConfig = JSON.parse($thisField.attr('data-toggle-class'));
+		var $targetField = $thisField.closest('form').find(toggleConfig.targetSelector);
+		// when...
+		// when not...
 //console.log( JSON.parse($thisField.attr('data-toggle-class')) );
 	});
 
@@ -129,6 +130,8 @@ $(function(){
 	// toggleWrapperClass : behavior
 	$(document).on('change', '.webform-input [data-toggle-wrapper-class]', function(evt){
 		var $thisField = $(this);
+		var toggleConfig = JSON.parse($thisField.attr('data-toggle-wrapper-class'));
+		var $targetField = $thisField.closest('form').find(toggleConfig.targetSelector);
 //console.log( JSON.parse($thisField.attr('data-toggle-wrapper-class')) );
 	});
 
