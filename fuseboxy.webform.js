@@ -77,7 +77,7 @@ $(function(){
 						var isRuleMatched = ( ruleType == 'when' && $thisField.val() == ruleValue ) || ( ruleType == 'whenNot' && $thisField.val() != ruleValue );
 						// check if rule matched
 						if ( isRuleMatched ) {
-							// modify each specified attribute
+							// modify each corresponding attribute of target field
 							for ( var attrName in toggleConfig[actionType][ruleType][ruleValue] ) {
 								var attrValue = toggleConfig[actionType][ruleType][ruleValue][attrName];
 								if ( attrValue === false || attrValue === null ) $targetField.removeAttr(attrName);
@@ -97,22 +97,24 @@ $(function(){
 		var $thisField = $(this);
 		var toggleConfig = JSON.parse($thisField.attr('data-toggle-value'));
 		var $targetField = $thisField.closest('form').find(toggleConfig.targetSelector);
-		// when...
-		if ( toggleConfig.setValue && toggleConfig.setValue.when ) {
-			for ( var whenValue in toggleConfig.setValue.when ) {
-				if ( $thisField.val() == whenValue ) {
-					$targetField.val( toggleConfig.setValue.when[whenValue] );
-				}
-			}
-		}
-		// when not...
-		if ( toggleConfig.setValue && toggleConfig.setValue.whenNot ) {
-			for ( var whenNotValue in toggleConfig.setValue.whenNot ) {
-				if ( $thisField.val() != whenNotValue ) {
-					$targetField.val( toggleConfig.setValue.whenNot[whenNotValue] );
-				}
-			}
-		}
+		// go through each action type
+		for ( var actionType of ['setValue'] ) {
+			// go through each rule type
+			for ( var ruleType of ['when', 'whenNot'] ) {
+				// check if config exists
+				if ( toggleConfig[actionType] && toggleConfig[actionType][ruleType] ) {
+					// go through each specified value in rules
+					for ( var ruleValue in toggleConfig[actionType][ruleType] ) {
+						var isRuleMatched = ( ruleType == 'when' && $thisField.val() == ruleValue ) || ( ruleType == 'whenNot' && $thisField.val() != ruleValue );
+						// check if rule matched
+						if ( isRuleMatched ) {
+							// modify value of target field
+							$targetField.val(toggleConfig[actionType][ruleType][ruleValue]);
+						} // for-attrName
+					} // for-ruleValue
+				} // if-defined
+			} // for-ruleType
+		} // for-actionType
 	});
 
 
