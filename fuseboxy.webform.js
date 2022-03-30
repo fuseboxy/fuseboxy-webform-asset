@@ -61,6 +61,78 @@ $(function(){
 	});
 
 
+	// toggleAttr : behavior
+	$(document).on('change', '.webform-input [data-toggle-attr]', function(evt){
+		var $thisField = $(this);
+		var toggleConfig = JSON.parse($thisField.attr('data-toggle-attr'));
+		var $targetField = $thisField.closest('form').find(toggleConfig.targetSelector);
+		// when...
+		if ( toggleConfig.setAttr && toggleConfig.setAttr.when ) {
+			for ( var whenValue in toggleConfig.setAttr.when ) {
+				if ( $thisField.val() == whenValue ) {
+					for ( var attrName in toggleConfig.setAttr.when[whenValue] ) {
+						var attrValue = toggleConfig.setAttr.when[whenValue][attrName];
+						if ( attrValue === false || attrValue === null ) $targetField.removeAttr(attrName);
+						else if ( attrValue === true ) $targetField.attr(attrName, attrName);
+						else $targetField.attr(attrName, attrValue);
+					}
+				}
+			}
+		}
+		// when not...
+		if ( toggleConfig.setAttr && toggleConfig.setAttr.whenNot ) {
+			for ( var whenNotValue in toggleConfig.setAttr.whenNot ) {
+				if ( $thisField.val() != whenNotValue ) {
+					for ( var attrName in toggleConfig.setAttr.whenNot[whenNotValue] ) {
+						var attrValue = toggleConfig.setAttr.whenNot[whenNotValue][attrName];
+						if ( attrValue === false || attrValue === null ) $targetField.removeAttr(attrName);
+						else if ( attrValue === true ) $targetField.attr(attrName, attrName);
+						else $targetField.attr(attrName, attrValue);
+					}
+				}
+			}
+		}
+	});
+
+
+	// toggleValue : behavior
+	$(document).on('change', '.webform-input [data-toggle-value]', function(evt){
+		var $thisField = $(this);
+		var toggleConfig = JSON.parse($thisField.attr('data-toggle-value'));
+		var $targetField = $thisField.closest('form').find(toggleConfig.targetSelector);
+		// when...
+		if ( toggleConfig.setValue && toggleConfig.setValue.when ) {
+			for ( var whenValue in toggleConfig.setValue.when ) {
+				if ( $thisField.val() == whenValue ) {
+					$targetField.val( toggleConfig.setValue.when[whenValue] );
+				}
+			}
+		}
+		// when not...
+		if ( toggleConfig.setValue && toggleConfig.setValue.whenNot ) {
+			for ( var whenNotValue in toggleConfig.setValue.whenNot ) {
+				if ( $thisField.val() != whenNotValue ) {
+					$targetField.val( toggleConfig.setValue.whenNot[whenNotValue] );
+				}
+			}
+		}
+	});
+
+
+	// toggleClass : behavior
+	$(document).on('change', '.webform-input [data-toggle-class]', function(evt){
+		var $thisField = $(this);
+//console.log( JSON.parse($thisField.attr('data-toggle-class')) );
+	});
+
+
+	// toggleWrapperClass : behavior
+	$(document).on('change', '.webform-input [data-toggle-wrapper-class]', function(evt){
+		var $thisField = $(this);
+//console.log( JSON.parse($thisField.attr('data-toggle-wrapper-class')) );
+	});
+
+
 	// datepicker : init
 	$(document).on('focus', '.webform-input-date .datepicker:not(.ready)', function(evt){
 		var $field = $(this);
