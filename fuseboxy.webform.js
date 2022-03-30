@@ -123,9 +123,26 @@ $(function(){
 		var $thisField = $(this);
 		var toggleConfig = JSON.parse($thisField.attr('data-toggle-class'));
 		var $targetField = $thisField.closest('form').find(toggleConfig.targetSelector);
-		// when...
-		// when not...
-//console.log( JSON.parse($thisField.attr('data-toggle-class')) );
+		// go through each action type
+		for ( var actionType of ['addClass', 'removeClass'] ) {
+			// go through each rule type
+			for ( var ruleType of ['when', 'whenNot'] ) {
+				// check if config exists
+				if ( toggleConfig[actionType] && toggleConfig[actionType][ruleType] ) {
+					// go through each specified value in rules
+					for ( var ruleValue in toggleConfig[actionType][ruleType] ) {
+						var isRuleMatched = ( ruleType == 'when' && $thisField.val() == ruleValue ) || ( ruleType == 'whenNot' && $thisField.val() != ruleValue );
+						// check if rule matched
+						if ( isRuleMatched ) {
+							var $className = toggleConfig[actionType][ruleType][ruleValue];
+							// modify class of target field
+							if ( actionType == 'addClass' ) $targetField.addClass($className);
+							else if ( actionType == 'removeClass' ) $targetField.removeClass($className);
+						} // for-attrName
+					} // for-ruleValue
+				} // if-defined
+			} // for-ruleType
+		} // for-actionType
 	});
 
 
@@ -134,7 +151,26 @@ $(function(){
 		var $thisField = $(this);
 		var toggleConfig = JSON.parse($thisField.attr('data-toggle-wrapper-class'));
 		var $targetField = $thisField.closest('form').find(toggleConfig.targetSelector);
-//console.log( JSON.parse($thisField.attr('data-toggle-wrapper-class')) );
+		// go through each action type
+		for ( var actionType of ['addClass', 'removeClass'] ) {
+			// go through each rule type
+			for ( var ruleType of ['when', 'whenNot'] ) {
+				// check if config exists
+				if ( toggleConfig[actionType] && toggleConfig[actionType][ruleType] ) {
+					// go through each specified value in rules
+					for ( var ruleValue in toggleConfig[actionType][ruleType] ) {
+						var isRuleMatched = ( ruleType == 'when' && $thisField.val() == ruleValue ) || ( ruleType == 'whenNot' && $thisField.val() != ruleValue );
+						// check if rule matched
+						if ( isRuleMatched ) {
+							var $className = toggleConfig[actionType][ruleType][ruleValue];
+							// modify class of target field
+							if ( actionType == 'addClass' ) $targetField.closest('.webform-input').addClass($className);
+							else if ( actionType == 'removeClass' ) $targetField.closest('.webform-input').removeClass($className);
+						} // for-attrName
+					} // for-ruleValue
+				} // if-defined
+			} // for-ruleType
+		} // for-actionType
 	});
 
 
