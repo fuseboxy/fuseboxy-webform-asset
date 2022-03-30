@@ -62,7 +62,7 @@ $(function(){
 
 
 	// datepicker : init
-	$(document).on('focus', '.datepicker:not(.ready)', function(evt){
+	$(document).on('focus', '.webform-input-date .datepicker:not(.ready)', function(evt){
 		var $field = $(this);
 		$field.datetimepicker({ format: 'Y-m-d', timepicker: false });
 		$field.addClass('ready').focus();
