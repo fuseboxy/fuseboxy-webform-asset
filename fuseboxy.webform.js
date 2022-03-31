@@ -128,17 +128,12 @@ if ( attrValue === false || attrValue === null ) {
 						var isRuleMatched = ( ruleType == 'when' && $thisField.val() == ruleValue ) || ( ruleType == 'whenNot' && $thisField.val() != ruleValue );
 						var newValue = toggleConfig[targetScope][ruleType][ruleValue];
 						// apply new value (when rule matched)
+						// ===> (simply do nothing when rule not matched)
+						// ===> (because it doesn't make sense to toggle to original value)
 						if ( isRuleMatched ) {
 							if      ( targetScope == 'element' ) $targetField.val(newValue);
 							else if ( targetScope == 'column'  ) $targetField.closest('.webform-col').attr('value', newValue);
 							else if ( targetScope == 'wrapper' ) $targetField.closest('.webform-input').attr('value', newValue);
-						// restore to original value (when rule not matched)
-						} else {
-
-
-
-/******** WORK IN PROGRESS **********/
-
 						} // if-matched
 					} // for-ruleValue
 				} // if-defined
