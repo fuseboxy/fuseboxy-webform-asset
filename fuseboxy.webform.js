@@ -74,30 +74,37 @@ $(function(){
 				if ( toggleConfig[targetScope] && toggleConfig[targetScope][ruleType] ) {
 					// go through each specified value in rules
 					for ( var ruleValue in toggleConfig[targetScope][ruleType] ) {
-						// check if any {when|whenNot} matched
 						var isRuleMatched = ( ruleType == 'when' && $thisField.val() == ruleValue ) || ( ruleType == 'whenNot' && $thisField.val() != ruleValue );
-						if ( isRuleMatched ) {
-							// modify each corresponding attribute
-							for ( var attrName in toggleConfig[targetScope][ruleType][ruleValue] ) {
-								var attrValue = toggleConfig[targetScope][ruleType][ruleValue][attrName];
-								// remove attribute
-								if ( attrValue === false || attrValue === null ) {
-									if      ( targetScope == 'element' ) $targetField.removeAttr(attrName);
-									else if ( targetScope == 'wrapper' ) $targetField.closest('.webform-input').removeAttr(attrName);
-									else if ( targetScope == 'column'  ) $targetField.closest('.webform-col').removeAttr(attrName);
-								// add attribute
-								} else if ( attrValue === true ) {
-									if      ( targetScope == 'element' ) $targetField.attr(attrName, attrName);
-									else if ( targetScope == 'wrapper' ) $targetField.closest('.webform-input').attr(attrName, attrName);
-									else if ( targetScope == 'column'  ) $targetField.closest('.webform-col').attr(attrName, attrName);
-								// set attribute
-								} else {
-									if      ( targetScope == 'element' ) $targetField.attr(attrName, attrValue);
-									else if ( targetScope == 'wrapper' ) $targetField.closest('.webform-input').attr(attrName, attrValue);
-									else if ( targetScope == 'column'  ) $targetField.closest('.webform-col').attr(attrName, attrValue);
-								}
-							} // for-attrName
-						} // if-matched
+						// modify each specified attribute
+						for ( var attrName in toggleConfig[targetScope][ruleType][ruleValue] ) {
+							var attrValue = toggleConfig[targetScope][ruleType][ruleValue][attrName];
+							// apply new attribute value (when rule matched)
+							if ( isRuleMatched ) {
+
+/******** WORK IN PROGRESS **********/
+
+							// restore to original attribute value (when rule not matched)
+							} else {
+/*
+// remove attribute
+if ( attrValue === false || attrValue === null ) {
+	if      ( targetScope == 'element' ) $targetField.removeAttr(attrName);
+	else if ( targetScope == 'wrapper' ) $targetField.closest('.webform-input').removeAttr(attrName);
+	else if ( targetScope == 'column'  ) $targetField.closest('.webform-col').removeAttr(attrName);
+// add attribute
+} else if ( attrValue === true ) {
+	if      ( targetScope == 'element' ) $targetField.attr(attrName, attrName);
+	else if ( targetScope == 'wrapper' ) $targetField.closest('.webform-input').attr(attrName, attrName);
+	else if ( targetScope == 'column'  ) $targetField.closest('.webform-col').attr(attrName, attrName);
+// set attribute
+} else {
+	if      ( targetScope == 'element' ) $targetField.attr(attrName, attrValue);
+	else if ( targetScope == 'wrapper' ) $targetField.closest('.webform-input').attr(attrName, attrValue);
+	else if ( targetScope == 'column'  ) $targetField.closest('.webform-col').attr(attrName, attrValue);
+}
+*/
+							} // if-matched
+						} // for-attrName
 					} // for-ruleValue
 				} // if-defined
 			} // for-ruleType
@@ -118,13 +125,20 @@ $(function(){
 				if ( toggleConfig[targetScope] && toggleConfig[targetScope][ruleType] ) {
 					// go through each specified value in rules
 					for ( var ruleValue in toggleConfig[targetScope][ruleType] ) {
-						// check if any {when|whenNot} matched
 						var isRuleMatched = ( ruleType == 'when' && $thisField.val() == ruleValue ) || ( ruleType == 'whenNot' && $thisField.val() != ruleValue );
+						var newValue = toggleConfig[targetScope][ruleType][ruleValue];
+						// apply new value (when rule matched)
 						if ( isRuleMatched ) {
-							// modify value of target according to scope
-							if      ( targetScope == 'element' ) $targetField.val(toggleConfig[targetScope][ruleType][ruleValue]);
-							else if ( targetScope == 'column'  ) $targetField.closest('.webform-col').attr('value', toggleConfig[targetScope][ruleType][ruleValue]);
-							else if ( targetScope == 'wrapper' ) $targetField.closest('.webform-input').attr('value', toggleConfig[targetScope][ruleType][ruleValue]);
+							if      ( targetScope == 'element' ) $targetField.val(newValue);
+							else if ( targetScope == 'column'  ) $targetField.closest('.webform-col').attr('value', newValue);
+							else if ( targetScope == 'wrapper' ) $targetField.closest('.webform-input').attr('value', newValue);
+						// restore to original value (when rule not matched)
+						} else {
+
+
+
+/******** WORK IN PROGRESS **********/
+
 						} // if-matched
 					} // for-ruleValue
 				} // if-defined
@@ -146,7 +160,6 @@ $(function(){
 				if ( toggleConfig[targetScope] && toggleConfig[targetScope][ruleType] ) {
 					// go through each specified value in rules
 					for ( var ruleValue in toggleConfig[targetScope][ruleType] ) {
-						// check if rule matched
 						var isRuleMatched = ( ruleType == 'when' && $thisField.val() == ruleValue ) || ( ruleType == 'whenNot' && $thisField.val() != ruleValue );
 						var $className = toggleConfig[targetScope][ruleType][ruleValue];
 						// add class (when rule matched)
@@ -159,7 +172,7 @@ $(function(){
 							if      ( targetScope == 'element' ) $targetField.removeClass($className);
 							else if ( targetScope == 'wrapper' ) $targetField.closest('.webform-input').removeClass($className);
 							else if ( targetScope == 'column'  ) $targetField.closest('.webform-col').removeClass($className);
-						}
+						} // if-matched
 					} // for-ruleValue
 				} // if-defined
 			} // for-ruleType
