@@ -74,8 +74,8 @@ $(function(){
 				if ( toggleConfig[targetScope] && toggleConfig[targetScope][ruleType] ) {
 					// go through each specified value in rules
 					for ( var ruleValue in toggleConfig[targetScope][ruleType] ) {
+						// check if any {when|whenNot} matched
 						var isRuleMatched = ( ruleType == 'when' && $thisField.val() == ruleValue ) || ( ruleType == 'whenNot' && $thisField.val() != ruleValue );
-						// check if rule matched
 						if ( isRuleMatched ) {
 							// modify each corresponding attribute
 							for ( var attrName in toggleConfig[targetScope][ruleType][ruleValue] ) {
@@ -111,23 +111,25 @@ $(function(){
 		var toggleConfig = JSON.parse($thisField.attr('data-toggle-value'));
 		var $targetField = $thisField.closest('form').find(toggleConfig.targetSelector);
 		// go through each action type
-		for ( var actionType of ['field','element','wrapper','column'] ) {
+		for ( var targetScope of ['element','wrapper','column'] ) {
 			// go through each rule type
 			for ( var ruleType of ['when', 'whenNot'] ) {
 				// check if config exists
-				if ( toggleConfig[actionType] && toggleConfig[actionType][ruleType] ) {
+				if ( toggleConfig[targetScope] && toggleConfig[targetScope][ruleType] ) {
 					// go through each specified value in rules
-					for ( var ruleValue in toggleConfig[actionType][ruleType] ) {
+					for ( var ruleValue in toggleConfig[targetScope][ruleType] ) {
+						// check if any {when|whenNot} matched
 						var isRuleMatched = ( ruleType == 'when' && $thisField.val() == ruleValue ) || ( ruleType == 'whenNot' && $thisField.val() != ruleValue );
-						// check if rule matched
 						if ( isRuleMatched ) {
-							// modify value of target field
-							$targetField.val(toggleConfig[actionType][ruleType][ruleValue]);
-						} // for-attrName
+							// modify value of target according to scope
+							if      ( targetScope == 'element' ) $targetField.val(toggleConfig[targetScope][ruleType][ruleValue]);
+							else if ( targetScope == 'column'  ) $targetField.closest('.webform-col').attr('value', toggleConfig[targetScope][ruleType][ruleValue]);
+							else if ( targetScope == 'wrapper' ) $targetField.closest('.webform-input').attr('value', toggleConfig[targetScope][ruleType][ruleValue]);
+						} // if-matched
 					} // for-ruleValue
 				} // if-defined
 			} // for-ruleType
-		} // for-actionType
+		} // for-targetScope
 	});
 
 
