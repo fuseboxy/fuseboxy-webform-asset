@@ -139,26 +139,31 @@ $(function(){
 		var toggleConfig = JSON.parse($thisField.attr('data-toggle-class'));
 		var $targetField = $thisField.closest('form').find(toggleConfig.targetSelector);
 		// go through each action type
-		for ( var actionType of ['addClass', 'removeClass', 'addWrapperClass', 'removeWrapperClass', 'addColumnClass', 'removeColumnClass'] ) {
+		for ( var targetScope of ['element', 'wrapper', 'column'] ) {
 			// go through each rule type
 			for ( var ruleType of ['when', 'whenNot'] ) {
 				// check if config exists
-				if ( toggleConfig[actionType] && toggleConfig[actionType][ruleType] ) {
+				if ( toggleConfig[targetScope] && toggleConfig[targetScope][ruleType] ) {
 					// go through each specified value in rules
-					for ( var ruleValue in toggleConfig[actionType][ruleType] ) {
-						var isRuleMatched = ( ruleType == 'when' && $thisField.val() == ruleValue ) || ( ruleType == 'whenNot' && $thisField.val() != ruleValue );
+					for ( var ruleValue in toggleConfig[targetScope][ruleType] ) {
 						// check if rule matched
+						var isRuleMatched = ( ruleType == 'when' && $thisField.val() == ruleValue ) || ( ruleType == 'whenNot' && $thisField.val() != ruleValue );
+						var $className = toggleConfig[targetScope][ruleType][ruleValue];
+						// add class (when rule matched)
 						if ( isRuleMatched ) {
-							var $className = toggleConfig[actionType][ruleType][ruleValue];
-							// modify class of target field
-							if ( actionType == 'addClass' ) $targetField.addClass($className);
-							else if ( actionType == 'removeClass' ) $targetField.removeClass($className);
-//alert($targetField.length);
-						} // for-attrName
+							if      ( targetScope == 'element' ) $targetField.addClass($className);
+							else if ( targetScope == 'wrapper' ) $targetField.closest('.webform-input').addClass($className);
+							else if ( targetScope == 'column'  ) $targetField.closest('.webform-col').addClass($className);
+						// remove class (when rule not matched)
+						} else {
+							if      ( targetScope == 'element' ) $targetField.removeClass($className);
+							else if ( targetScope == 'wrapper' ) $targetField.closest('.webform-input').removeClass($className);
+							else if ( targetScope == 'column'  ) $targetField.closest('.webform-col').removeClass($className);
+						}
 					} // for-ruleValue
 				} // if-defined
 			} // for-ruleType
-		} // for-actionType
+		} // for-targetScope
 	});
 
 
