@@ -71,39 +71,33 @@ $(function(){
 			// go through each rule type
 			for ( var ruleType of ['when', 'whenNot'] ) {
 				// check if config exists
-				if ( toggleConfig[targetScope] && toggleConfig[targetScope][ruleType] ) {
+				if ( typeof toggleConfig[targetScope] !== 'undefined' && typeof toggleConfig[targetScope][ruleType] !== 'undefined' ) {
 					// go through each specified value in rules
 					for ( var ruleValue in toggleConfig[targetScope][ruleType] ) {
 						var isRuleMatched = ( ruleType == 'when' && $thisField.val() == ruleValue ) || ( ruleType == 'whenNot' && $thisField.val() != ruleValue );
 						// modify each specified attribute
 						for ( var attrName in toggleConfig[targetScope][ruleType][ruleValue] ) {
-							var attrValue = toggleConfig[targetScope][ruleType][ruleValue][attrName];
-							// apply new attribute value (when rule matched)
+/*
+							var attrNewValue = toggleConfig[targetScope][ruleType][ruleValue][attrName];
+							var attrRestoreValue = $targetField.data(targetScope+'-'+attrName);
+							// set attribute to null to remove attribute
+							if ( attrNewValue === false ) attrNewValue = null;
+							// apply new attribute value to target (when rule matched)
+							// ===> retain opposite rule (or original attribute value) for restore
 							if ( isRuleMatched ) {
+$targetField.data(targetScope+'-'+attrName, $targetField.attr(attrName));
 
-/******** WORK IN PROGRESS **********/
 
+								if      ( targetScope == 'element' ) $targetField.attr(attrName, attrNewValue);
+								else if ( targetScope == 'wrapper' ) $targetField.closest('.webform-input').attr(attrName, attrNewValue);
+								else if ( targetScope == 'column'  ) $targetField.closest('.webform-col').attr(attrName, attrNewValue);
 							// restore to original attribute value (when rule not matched)
 							} else {
-/*
-// remove attribute
-if ( attrValue === false || attrValue === null ) {
-	if      ( targetScope == 'element' ) $targetField.removeAttr(attrName);
-	else if ( targetScope == 'wrapper' ) $targetField.closest('.webform-input').removeAttr(attrName);
-	else if ( targetScope == 'column'  ) $targetField.closest('.webform-col').removeAttr(attrName);
-// add attribute
-} else if ( attrValue === true ) {
-	if      ( targetScope == 'element' ) $targetField.attr(attrName, attrName);
-	else if ( targetScope == 'wrapper' ) $targetField.closest('.webform-input').attr(attrName, attrName);
-	else if ( targetScope == 'column'  ) $targetField.closest('.webform-col').attr(attrName, attrName);
-// set attribute
-} else {
-	if      ( targetScope == 'element' ) $targetField.attr(attrName, attrValue);
-	else if ( targetScope == 'wrapper' ) $targetField.closest('.webform-input').attr(attrName, attrValue);
-	else if ( targetScope == 'column'  ) $targetField.closest('.webform-col').attr(attrName, attrValue);
-}
-*/
+								if      ( targetScope == 'element' ) $targetField.attr(attrName, attrRestoreValue);
+								else if ( targetScope == 'wrapper' ) $targetField.closest('.webform-input').attr(attrName, attrRestoreValue);
+								else if ( targetScope == 'column'  ) $targetField.closest('.webform-col').attr(attrName, attrRestoreValue);
 							} // if-matched
+*/
 						} // for-attrName
 					} // for-ruleValue
 				} // if-defined
@@ -122,7 +116,7 @@ if ( attrValue === false || attrValue === null ) {
 			// go through each rule type
 			for ( var ruleType of ['when', 'whenNot'] ) {
 				// check if config exists
-				if ( toggleConfig[targetScope] && toggleConfig[targetScope][ruleType] ) {
+				if ( typeof toggleConfig[targetScope] !== 'undefined' && typeof toggleConfig[targetScope][ruleType] !== 'undefined' ) {
 					// go through each specified value in rules
 					for ( var ruleValue in toggleConfig[targetScope][ruleType] ) {
 						var isRuleMatched = ( ruleType == 'when' && $thisField.val() == ruleValue ) || ( ruleType == 'whenNot' && $thisField.val() != ruleValue );
@@ -152,7 +146,7 @@ if ( attrValue === false || attrValue === null ) {
 			// go through each rule type
 			for ( var ruleType of ['when', 'whenNot'] ) {
 				// check if config exists
-				if ( toggleConfig[targetScope] && toggleConfig[targetScope][ruleType] ) {
+				if ( typeof toggleConfig[targetScope] !== 'undefined' && typeof toggleConfig[targetScope][ruleType] !== 'undefined' ) {
 					// go through each specified value in rules
 					for ( var ruleValue in toggleConfig[targetScope][ruleType] ) {
 						var isRuleMatched = ( ruleType == 'when' && $thisField.val() == ruleValue ) || ( ruleType == 'whenNot' && $thisField.val() != ruleValue );
