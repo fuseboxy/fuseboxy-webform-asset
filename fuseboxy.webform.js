@@ -66,10 +66,28 @@ $(function(){
 		var $thisField = $(this);
 		var toggleConfig = JSON.parse($thisField.attr('data-toggle-attr'));
 		var $targetField = $thisField.closest('form').find(toggleConfig.targetSelector);
+		// retain original value of each relevant attribute
+		// ===> (only do it once even if this event is triggered again)
+		for ( var targetScope of ['element', 'wrapper', 'column'] ) {
+			for ( var ruleType of ['when', 'whenNot'] ) {
+				if ( typeof toggleConfig[targetScope] !== 'undefined' && typeof toggleConfig[targetScope][ruleType] !== 'undefined' ) {
+					for ( var ruleValue in toggleConfig[targetScope][ruleType] ) {
+						for ( var attrName in toggleConfig[targetScope][ruleType][ruleValue] ) {
+							if ( typeof $targetField.data('orig-'+targetScope+'-'+attrName) === 'undefined' ) {
+								if      ( targetScope == 'element' ) $targetField.data('orig-'+targetScope+'-'+attrName, $targetField.attr(attrName) || false);
+								else if ( targetScope == 'wrapper' ) $targetField.data('orig-'+targetScope+'-'+attrName, $targetField.closest('.webform-input').attr(attrName) || false);
+								else if ( targetScope == 'column'  ) $targetField.data('orig-'+targetScope+'-'+attrName, $targetField.closest('.webform-col').attr(attrName) || false);
+							}
+						}
+					}
+				}
+			}
+		}
 		// go through each action type
 		for ( var targetScope of ['element', 'wrapper', 'column'] ) {
 			// go through each rule type
 			for ( var ruleType of ['when', 'whenNot'] ) {
+				var oppositeRuleType = ( ruleType == 'when' ) ? 'whenNot' : 'when';
 				// check if config exists
 				if ( typeof toggleConfig[targetScope] !== 'undefined' && typeof toggleConfig[targetScope][ruleType] !== 'undefined' ) {
 					// go through each specified value in rules
@@ -77,27 +95,30 @@ $(function(){
 						var isRuleMatched = ( ruleType == 'when' && $thisField.val() == ruleValue ) || ( ruleType == 'whenNot' && $thisField.val() != ruleValue );
 						// modify each specified attribute
 						for ( var attrName in toggleConfig[targetScope][ruleType][ruleValue] ) {
-/*
 							var attrNewValue = toggleConfig[targetScope][ruleType][ruleValue][attrName];
-							var attrRestoreValue = $targetField.data(targetScope+'-'+attrName);
+							var attrOldValue = $targetField.data('orig-'+targetScope+'-'+attrName);
 							// set attribute to null to remove attribute
 							if ( attrNewValue === false ) attrNewValue = null;
+							if ( attrOldValue === false ) attrOldValue = null;
+							// see if attribute has any opposite rule
+							var hasOppositeRule = (
+								typeof toggleConfig[targetScope][oppositeRuleType] !== 'undefined' &&
+								typeof toggleConfig[targetScope][oppositeRuleType][ruleValue] !== 'undefined' &&
+								typeof toggleConfig[targetScope][oppositeRuleType][ruleValue][attrName] !== 'undefined'
+							);
 							// apply new attribute value to target (when rule matched)
-							// ===> retain opposite rule (or original attribute value) for restore
 							if ( isRuleMatched ) {
-$targetField.data(targetScope+'-'+attrName, $targetField.attr(attrName));
-
-
 								if      ( targetScope == 'element' ) $targetField.attr(attrName, attrNewValue);
 								else if ( targetScope == 'wrapper' ) $targetField.closest('.webform-input').attr(attrName, attrNewValue);
 								else if ( targetScope == 'column'  ) $targetField.closest('.webform-col').attr(attrName, attrNewValue);
-							// restore to original attribute value (when rule not matched)
-							} else {
-								if      ( targetScope == 'element' ) $targetField.attr(attrName, attrRestoreValue);
-								else if ( targetScope == 'wrapper' ) $targetField.closest('.webform-input').attr(attrName, attrRestoreValue);
-								else if ( targetScope == 'column'  ) $targetField.closest('.webform-col').attr(attrName, attrRestoreValue);
+							// restore to original attribute value (when rule not matched & no opposite rule)
+							// ===> when there is opposite rule
+							// ===> we simply let the value of opposite rule applied (instead of restore to original value)
+							} else if ( !hasOppositeRule ) {
+								if      ( targetScope == 'element' ) $targetField.attr(attrName, attrOldValue);
+								else if ( targetScope == 'wrapper' ) $targetField.closest('.webform-input').attr(attrName, attrOldValue);
+								else if ( targetScope == 'column'  ) $targetField.closest('.webform-col').attr(attrName, attrOldValue);
 							} // if-matched
-*/
 						} // for-attrName
 					} // for-ruleValue
 				} // if-defined
