@@ -68,13 +68,13 @@ $(function(){
 		var $targetField = $thisField.closest('form').find(toggleConfig.targetSelector);
 		// retain original value of each relevant attribute
 		// ===> (only do it once even if this event is triggered again)
-		for ( var targetScope of ['element', 'wrapper', 'column'] ) {
+		for ( var targetScope of ['field', 'element', 'wrapper', 'column'] ) {
 			for ( var ruleType of ['when', 'whenNot'] ) {
 				if ( typeof toggleConfig[targetScope] !== 'undefined' && typeof toggleConfig[targetScope][ruleType] !== 'undefined' ) {
 					for ( var ruleValue in toggleConfig[targetScope][ruleType] ) {
 						for ( var attrName in toggleConfig[targetScope][ruleType][ruleValue] ) {
 							if ( typeof $targetField.data('orig-'+targetScope+'-'+attrName) === 'undefined' ) {
-								if      ( targetScope == 'element' ) $targetField.data('orig-'+targetScope+'-'+attrName, $targetField.attr(attrName) || false);
+								if      ( targetScope == 'field' || targetScope == 'element' ) $targetField.data('orig-'+targetScope+'-'+attrName, $targetField.attr(attrName) || false);
 								else if ( targetScope == 'wrapper' ) $targetField.data('orig-'+targetScope+'-'+attrName, $targetField.closest('.webform-input').attr(attrName) || false);
 								else if ( targetScope == 'column'  ) $targetField.data('orig-'+targetScope+'-'+attrName, $targetField.closest('.webform-col').attr(attrName) || false);
 							}
@@ -84,7 +84,7 @@ $(function(){
 			}
 		}
 		// go through each action type
-		for ( var targetScope of ['element', 'wrapper', 'column'] ) {
+		for ( var targetScope of ['field', 'element', 'wrapper', 'column'] ) {
 			// go through each rule type
 			for ( var ruleType of ['when', 'whenNot'] ) {
 				var oppositeRuleType = ( ruleType == 'when' ) ? 'whenNot' : 'when';
@@ -108,14 +108,14 @@ $(function(){
 							);
 							// apply new attribute value to target (when rule matched)
 							if ( isRuleMatched ) {
-								if      ( targetScope == 'element' ) $targetField.attr(attrName, attrNewValue);
+								if      ( targetScope == 'field' || targetScope == 'element' ) $targetField.attr(attrName, attrNewValue);
 								else if ( targetScope == 'wrapper' ) $targetField.closest('.webform-input').attr(attrName, attrNewValue);
 								else if ( targetScope == 'column'  ) $targetField.closest('.webform-col').attr(attrName, attrNewValue);
 							// restore to original attribute value (when rule not matched & no opposite rule)
 							// ===> when there is opposite rule
 							// ===> we simply let the value of opposite rule applied (instead of restore to original value)
 							} else if ( !hasOppositeRule ) {
-								if      ( targetScope == 'element' ) $targetField.attr(attrName, attrOldValue);
+								if      ( targetScope == 'field' || targetScope == 'element' ) $targetField.attr(attrName, attrOldValue);
 								else if ( targetScope == 'wrapper' ) $targetField.closest('.webform-input').attr(attrName, attrOldValue);
 								else if ( targetScope == 'column'  ) $targetField.closest('.webform-col').attr(attrName, attrOldValue);
 							} // if-matched
@@ -133,7 +133,7 @@ $(function(){
 		var toggleConfig = JSON.parse($thisField.attr('data-toggle-value'));
 		var $targetField = $thisField.closest('form').find(toggleConfig.targetSelector);
 		// go through each action type
-		for ( var targetScope of ['element','wrapper','column'] ) {
+		for ( var targetScope of ['field', 'element', 'wrapper', 'column'] ) {
 			// go through each rule type
 			for ( var ruleType of ['when', 'whenNot'] ) {
 				// check if config exists
@@ -146,7 +146,7 @@ $(function(){
 						// ===> (simply do nothing when rule not matched)
 						// ===> (because it doesn't make sense to toggle to original value)
 						if ( isRuleMatched ) {
-							if      ( targetScope == 'element' ) $targetField.val(newValue);
+							if      ( targetScope == 'field' || targetScope == 'element' ) $targetField.val(newValue);
 							else if ( targetScope == 'column'  ) $targetField.closest('.webform-col').attr('value', newValue);
 							else if ( targetScope == 'wrapper' ) $targetField.closest('.webform-input').attr('value', newValue);
 						} // if-matched
@@ -163,7 +163,7 @@ $(function(){
 		var toggleConfig = JSON.parse($thisField.attr('data-toggle-class'));
 		var $targetField = $thisField.closest('form').find(toggleConfig.targetSelector);
 		// go through each action type
-		for ( var targetScope of ['element', 'wrapper', 'column'] ) {
+		for ( var targetScope of ['field', 'element', 'wrapper', 'column'] ) {
 			// go through each rule type
 			for ( var ruleType of ['when', 'whenNot'] ) {
 				// check if config exists
@@ -174,12 +174,12 @@ $(function(){
 						var $className = toggleConfig[targetScope][ruleType][ruleValue];
 						// add class (when rule matched)
 						if ( isRuleMatched ) {
-							if      ( targetScope == 'element' ) $targetField.addClass($className);
+							if      ( targetScope == 'field' || targetScope == 'element' ) $targetField.addClass($className);
 							else if ( targetScope == 'wrapper' ) $targetField.closest('.webform-input').addClass($className);
 							else if ( targetScope == 'column'  ) $targetField.closest('.webform-col').addClass($className);
 						// remove class (when rule not matched)
 						} else {
-							if      ( targetScope == 'element' ) $targetField.removeClass($className);
+							if      ( targetScope == 'field' || targetScope == 'element' ) $targetField.removeClass($className);
 							else if ( targetScope == 'wrapper' ) $targetField.closest('.webform-input').removeClass($className);
 							else if ( targetScope == 'column'  ) $targetField.closest('.webform-col').removeClass($className);
 						} // if-matched
