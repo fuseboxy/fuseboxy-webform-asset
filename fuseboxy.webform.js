@@ -23,14 +23,15 @@ $(function(){
 	$(document).on('keyup', '.webform-input-date input', function(evt){
 		var regex = new RegExp('[^0-9\-]', 'g');
 		var $field = $(this);
+		var maxlength = parseInt( $(this).attr('maxlength') );
 		var filtered;
 		// unify delimiter
 		filtered = $field.val().replace('/', '-');
 		if ( $field.val() != filtered ) $field.val(filtered);
 		// auto-append delimiter
 		var arr = $field.val().split('-');
-		if ( arr.length == 1 && arr[0].length == 4 ) $field.val( $field.val()+'-' );
-		if ( arr.length == 2 && arr[1].length == 2 ) $field.val( $field.val()+'-' );
+		if ( arr.length == 1 && arr[0].length == 4 && $field.val().length < maxlength ) $field.val($field.val()+'-');
+		if ( arr.length == 2 && arr[1].length == 2 && $field.val().length < maxlength ) $field.val($field.val()+'-');
 		// remove duplicated delimiter
 		filtered = $field.val().replace(/[\-]+/g, '-');
 		if ( $field.val() != filtered ) $field.val(filtered);
