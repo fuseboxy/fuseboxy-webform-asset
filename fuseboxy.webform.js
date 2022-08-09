@@ -193,8 +193,14 @@ $(function(){
 	// datepicker : init
 	$(document).on('focus', '.webform-input-date .datepicker:not(.ready)', function(evt){
 		var $field = $(this);
-		$field.datetimepicker({ format: 'Y-m-d', timepicker: false });
+		$field.datetimepicker({ format : ( $field.attr('data-date-format') || 'Y-m-d' ), timepicker: false });
 		$field.addClass('ready').focus();
+	});
+	// datepicker : locale
+	// ===> dynamically change global locale (because [lang] options does not work)
+	$(document).on('focus', '.webform-input-date .datepicker.ready', function(evt){
+		var $field = $(this);
+		$.datetimepicker.setLocale( $field.attr('data-date-locale') || 'en' );
 	});
 
 
