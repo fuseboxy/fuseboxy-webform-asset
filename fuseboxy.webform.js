@@ -154,7 +154,14 @@ $(function(){
 	// datepicker : init
 	$(document).on('focus', '.webform-input-date .datepicker:not(.ready)', function(evt){
 		var $field = $(this);
-		$field.datetimepicker({ format : ( $field.attr('data-datepicker-format') || 'Y-m-d' ), timepicker: false });
+		$field.datetimepicker({
+			// custom or default date format
+			format : ( $field.attr('data-datepicker-format') || 'Y-m-d' ),
+			// no time allowed
+			timepicker: false,
+			// avoid the plugin fixes it into default date when custom format is not full date (e.g. year & month)
+			validateOnBlur: !$field.is('[data-datepicker-format]')
+		});
 		$field.addClass('ready').focus();
 	});
 	// datepicker : locale
