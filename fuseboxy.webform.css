@@ -1,3 +1,7 @@
+/* table field */
+.webform-input-table .webform-input.form-group { margin-bottom: .5rem; }
+
+
 /* signature pad */
 .webform-input-signature {
 	border: solid 1px transparent;
@@ -12,10 +16,6 @@
 }
 .webform-input-signature.ready:hover { border: solid 1px #dee2e6; }
 .webform-input-signature.ready .signature-pad { cursor: pointer; }
-
-
-/* table field */
-.webform-input-table .webform-input.form-group { margin-bottom: .5rem; }
 
 
 /* autosave */
