@@ -234,7 +234,6 @@ $(function(){
 		var $container  = $(this);
 		var $field      = $container.find('[data-toggle=ajax-upload]');
 		var $chooseBtn  = $( $field.attr('data-choose-button') );
-		var $removeBtn  = $( $field.attr('data-remove-button') );
 		var $preview    = $( $field.attr('data-preview') );
 		// create hidden form
 		var ajaxFormID = $container.attr('id')+'-ajax-upload';
@@ -261,14 +260,10 @@ $(function(){
 			evt.preventDefault();
 			$hiddenFileField.click();
 		}).removeClass('disabled');
-		// remove button
-		// ===> click to clear selected image
-		$removeBtn.on('click', function(evt){
-			evt.preventDefault();
-			$removeBtn.hide();
-			$chooseBtn.html( $chooseBtn.attr('data-button-text') );
-			$field.val('').trigger('change');
-			$preview.attr('href', '').html('').hide();
+		// preview link
+		// ===> open link & avoid opening file select dialog
+		$preview.on('click', function(evt){
+			evt.stopPropagation();
 		});
 		// mark complete
 		$container.addClass('uploader-ready');
