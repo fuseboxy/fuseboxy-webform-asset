@@ -231,13 +231,13 @@ $(function(){
 	// ajax uploader : init
 	$(document).on('mouseover focus', '.webform-input-file:has(.btn-choose):not(.uploader-ready),.webform-input-image:has(.btn-choose):not(.uploader-ready)', function(evt){
 		// elements
-		var $container  = $(this);
-		var $field      = $container.find('[data-toggle=ajax-upload]');
-		var $chooseBtn  = $( $field.attr('data-choose-button') );
-		var $preview    = $( $field.attr('data-preview') );
+		var $container = $(this);
+		var $field     = $container.find('[data-toggle=ajax-upload]');
+		var $chooseBtn = $( $field.attr('data-choose-button') ).first();
+		var $preview   = $( $field.attr('data-preview') ).first();
 		// create hidden form
 		var ajaxFormID = $container.attr('id')+'-ajax-upload';
-		var $ajaxForm = $('<form><input type="file" name="file" /><button type="submit">Upload</button></form>').attr({
+		var $ajaxForm = $('<form class="d-none"><input type="file" name="file" /><button type="submit">Upload</button></form>').attr({
 			'id'              : ajaxFormID,
 			'action'          : $field.attr('data-form-action'),
 			'method'          : 'post',
@@ -246,7 +246,7 @@ $(function(){
 			'data-target'     : $field.attr('data-target'),
 			'data-callback'   : "$('#"+ajaxFormID+"').remove();",
 			'data-transition' : 'none',
-		}).hide().appendTo('body');
+		}).appendTo('body');
 		// hidden file field
 		// ===> choose file & auto-submit
 		var $hiddenFileField = $ajaxForm.find('[type=file]');
